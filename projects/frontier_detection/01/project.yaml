@@ -1,0 +1,41 @@
+sim:
+  map: office_floor
+  dt: 0.05
+  refresh_rate_hz: 20
+  max_steps: 20000
+  collision_policy: stop
+  log_system_events: true
+  params:
+    route_csv: data/routes.csv
+    route_id: random
+
+ui:
+  zoom_percent: 120
+  show_lidar: true
+  camera:
+    mode: follow_robot
+    robot_id: explorer
+    smoothing: 1.0
+    allow_pan: true
+    allow_zoom: true
+  sim_panel: OfficeRouteSimulationPanel
+
+robots:
+  - id: explorer
+    model: Layka
+    behavior: OfficeRouteWaypointBehavior
+    pose: [-14.95, -6.5, 0.0]
+    params:
+      forward_speed_m_s: 1.00
+      turn_gain: 3.6
+      max_angular_rad_s: 3.2
+      rotate_in_place_angle_rad: 0.25
+      slowdown_distance_m: 0.85
+      waypoint_tolerance_m: 0.18
+      stop_on_complete: true
+    lidar:
+      enabled: true
+      show_rays: true
+      max_distance: 5.8
+      sample_count: 60
+      visual_hit_margin_m: 0.03
