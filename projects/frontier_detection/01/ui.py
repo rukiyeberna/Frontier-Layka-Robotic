@@ -76,3 +76,15 @@ class OfficeRouteSimulationPanel:
             color="orange",
             alpha=0.88,
         )
+        #frontier noktalarını çizsin
+        candidates = behavior.get_frontier_candidates()
+        for c in candidates:
+            frame.add_circle([c.x_m, c.y_m], 0.10, color="deepskyblue", alpha=0.35)
+            frame.add_lines(
+                [[[c.x_m - 0.12, c.y_m - 0.12], [c.x_m + 0.12, c.y_m + 0.12]]],
+                linewidth=0.018, color="deepskyblue", alpha=0.85,
+            )
+            frame.add_lines(
+                [[[c.x_m + 0.12, c.y_m - 0.12], [c.x_m - 0.12, c.y_m + 0.12]]],
+                linewidth=0.018, color="deepskyblue", alpha=0.85,
+            )

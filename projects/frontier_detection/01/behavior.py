@@ -7,6 +7,7 @@ from sim_api.behavior import Behavior
 
 from .frontier_detection import FrontierObservation
 from .utils import NAV_ROUTE, ROOM_ROUTE, build_route_waypoints
+from .algorithms.wfd import WavefrontFrontierDetector
 
 
 DEFAULT_ROUTE_CSV = "data/routes.csv"
@@ -63,6 +64,7 @@ class OfficeRouteWaypointBehavior(Behavior):
         self.frontier_candidates = []
         self.mode = "route_start"
         self._completion_reported = False
+        self.detector = WavefrontFrontierDetector()
         ctx.log(
             "office route {} loaded: {} of {} rooms, {} navigation waypoints, start {}".format(
                 self.selected_route_id,
@@ -94,6 +96,9 @@ class OfficeRouteWaypointBehavior(Behavior):
             distance_m = self._update_target_state(pose, target)
 
         self._drive_toward_target(pose, distance_m)
+        obs = self.build_frontier_observation(ctx)
+        if obs is not None:
+            self.frontier_candidates = self.detector.execute(obs)
 
     def get_frontier_candidates(self):
         """Return the latest student-produced candidates.
